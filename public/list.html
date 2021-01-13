@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../public/vue.min.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <input type="button" value="点我" @click="isShow=!isShow">
+        <h2 v-green v-border @click="info='天天吃鸡'" v-if="isShow">{{info}}</h2>
+        <input type="text" v-model="info">
+    </div>
+</body>
+
+</html>
+
+<script>
+    // 自定义指令的注册 必须写在vue实例化之前
+    Vue.directive("green", {
+        // 当自定义指令应用到了元素上 就会触发
+        bind(el, binding) {
+            console.log('1-bind', el, binding);
+            el.style.backgroundColor = "red";
+        },
+        // 元素被插入dom树中时 会被触发
+        inserted(el, binding) {
+            console.log('2-inserted', el, binding);
+        },
+        // 只要数据发生变化就会触发
+        update(el, binding) {
+            console.log('3-update', el, binding);
+            el.style.backgroundColor = "yellow";
+        }
+    })
+    // 自定义指令的名称里面不能有大写字母
+    Vue.directive("border", {
+        bind(el) {
+            el.style.border = "10px dashed yellow"
+        },
+        update(el, binding) {
+            el.style.border = "10px dashed red"
+        }
+    })
+
+    var app = new Vue({
+        el: '#app',
+        data: {
+            info: '我是标题',
+            isShow: true
+        },
+    })
+</script>
